@@ -247,7 +247,12 @@ function MessageList(props) {
                         )
                         : mensagem.texto.startsWith(':image:')
                             ? (
-                                <Image src={mensagem.texto.replace(':image:', '')}/>
+                                <Image 
+                                    styleSheet={{
+                                        maxWidth: '350px',
+                                    }}
+                                    src={mensagem.texto.replace(':image:', '')}
+                                />
                             )
                             : (
                                 mensagem.texto
@@ -272,10 +277,19 @@ function ButtonSendFile () {
                 cacheControl: 3600,
                 upsert: false
             });
-            const { link, erro } = supabaseClient.storage.from(`images`).getPublicUrl(`public/${file.name}`);
-            console.log(link);
-            handleNovaMensagem(`:image:${link}`);
+            getUrl();
+            // console.log(data);
+            // const { signedURL, urlError } = await supabaseClient.storage.from('images').createSignedUrl(`public/${file.name}`);
+            // const { link, erro } = supabaseClient.storage.from('images').getPublicUrl(`public/${file.name}`);
+            // console.log(link);
+            // handleNovaMensagem(`:image:${link}`);
         }
+    }
+
+    function getUrl () {
+        const link = supabaseClient.storage.from('images').getPublicUrl(`public/${file.name}`);
+        console.log(link);
+        handleNovaMensagem(`:image:${link.publicURL}`);
     }
 
     function handleNovaMensagem(novaMensagem) {
@@ -358,10 +372,10 @@ function ButtonSendFile () {
                             margin: '2px',
                         }}
                     >
-                        <input type="file" onChange={(event) => {
+                        <input id="inputFile" name="inputFile" type="file" onChange={(event) => {
                             const selectedFile = event.target.files[0];
                             setFile(selectedFile);
-                        }} />
+                        }}/>
                         <Button
                             styleSheet={{
                                 borderRadius: '50%',
