@@ -249,7 +249,10 @@ function MessageList(props) {
                             ? (
                                 <Image 
                                     styleSheet={{
-                                        maxWidth: '350px',
+                                        maxWidth: {
+                                            xs: '150px',
+                                            md: '300px',
+                                        },
                                     }}
                                     src={mensagem.texto.replace(':image:', '')}
                                 />
